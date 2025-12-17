@@ -1,7 +1,8 @@
+import type { DocSection } from "@/components/docs/interfaces";
+import { getAllSections } from "@/components/docs/loader"; // dynamic data!
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { DocSection, getAllSections } from "@/data/docsData";
-import Fuse from "fuse.js";
+import Fuse, { FuseResult } from "fuse.js";
 import { ArrowRight, FileText, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -21,12 +22,14 @@ export const SearchDialog = ({ open, onOpenChange }: SearchDialogProps) => {
     () =>
       new Fuse(sections, {
         keys: [
-          { name: "title", weight: 0.7 },
-          { name: "content", weight: 0.3 },
+          { name: "content", weight: 0.8 }, // content-এর উপর বেশি focus
+          { name: "title", weight: 0.2 }, // title কম weight
         ],
-        threshold: 0.4,
+        threshold: 0.35,
+        includeScore: true,
         includeMatches: true,
         minMatchCharLength: 2,
+        shouldSort: true,
       }),
     [sections]
   );
@@ -36,7 +39,7 @@ export const SearchDialog = ({ open, onOpenChange }: SearchDialogProps) => {
     return fuse.search(query).slice(0, 8);
   }, [query, fuse]);
 
-  // Keyboard shortcut
+  // Ctrl+K / Cmd+K shortcut
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
@@ -44,7 +47,6 @@ export const SearchDialog = ({ open, onOpenChange }: SearchDialogProps) => {
         onOpenChange(true);
       }
     };
-
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onOpenChange]);
@@ -55,38 +57,64 @@ export const SearchDialog = ({ open, onOpenChange }: SearchDialogProps) => {
     setQuery("");
   };
 
-  const getSnippet = (content: string, maxLength: number = 120): string => {
-    const plainText = content
-      .replace(/```[\s\S]*?```/g, "")
+  // Snippet with bold highlight for matched words
+  const getSnippet = (
+    content: string,
+    matches: Fuse.FuseResultMatch[] = [],
+    maxLength = 140
+  ): string => {
+    let highlighted = content;
+
+    if (matches.length > 0) {
+      // Only highlight matches in content
+      const contentMatches = matches.filter((m) => m.key === "content");
+      const indices = contentMatches.flatMap((m) => m.indices);
+
+      // Sort indices reverse to avoid offset issues
+      indices.sort((a, b) => b[0] - a[0]);
+
+      indices.forEach(([start, end]) => {
+        const matched = content.substring(start, end + 1);
+        highlighted =
+          highlighted.slice(0, start) +
+          `**${matched}**` +
+          highlighted.slice(end + 1);
+      });
+    }
+
+    // Clean markdown for plain text snippet
+    const plain = highlighted
+      .replace(/```[\s\S]*?```/g, " ")
       .replace(/`[^`]+`/g, "")
       .replace(/#{1,6}\s/g, "")
-      .replace(/\*\*([^*]+)\*\*/g, "$1")
+      .replace(/\*\*/g, "") // remove bold markers after highlight
       .replace(/\n+/g, " ")
       .trim();
 
-    if (plainText.length <= maxLength) return plainText;
-    return plainText.substring(0, maxLength).trim() + "...";
+    return plain.length > maxLength
+      ? plain.substring(0, maxLength) + "..."
+      : plain;
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl p-0 gap-0 overflow-hidden">
+      <DialogContent className="max-w-2xl p-0 gap-0 overflow-hidden h-full max-h-screen sm:max-h-[80vh] sm:rounded-lg">
         <div className="flex items-center border-b border-border px-4">
           <Search className="h-5 w-5 text-muted-foreground shrink-0" />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search documentation..."
+            placeholder="Search in documentation content..."
             className="border-0 focus-visible:ring-0 text-lg py-6"
             autoFocus
           />
         </div>
 
-        <div className="max-h-[60vh] overflow-y-auto">
+        <div className="max-h-[60vh] overflow-y-auto sm:max-h-[65vh]">
           {query.trim() === "" ? (
             <div className="p-8 text-center text-muted-foreground">
               <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p>Start typing to search the documentation</p>
+              <p>Start typing to search in module contents</p>
             </div>
           ) : results.length === 0 ? (
             <div className="p-8 text-center text-muted-foreground">
@@ -94,26 +122,30 @@ export const SearchDialog = ({ open, onOpenChange }: SearchDialogProps) => {
             </div>
           ) : (
             <div className="p-2">
-              {results.map(({ item }) => (
-                <button
-                  key={item.id}
-                  onClick={() => handleSelect(item)}
-                  className="w-full flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors text-left group"
-                >
-                  <FileText className="h-5 w-5 text-primary mt-0.5 shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-foreground group-hover:text-primary transition-colors">
-                        {item.title}
-                      </span>
-                      <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+              {results.map((fuseResult: FuseResult<DocSection>) => {
+                const { item, matches = [] } = fuseResult;
+
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => handleSelect(item)}
+                    className="w-full flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors text-left group"
+                  >
+                    <FileText className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium text-foreground group-hover:text-primary transition-colors">
+                          {item.title}
+                        </span>
+                        <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                        {getSnippet(item.content, matches)}
+                      </p>
                     </div>
-                    <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
-                      {getSnippet(item.content)}
-                    </p>
-                  </div>
-                </button>
-              ))}
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>
@@ -133,6 +165,7 @@ export const SearchDialog = ({ open, onOpenChange }: SearchDialogProps) => {
               to close
             </span>
           </div>
+          <span>Search powered by content</span>
         </div>
       </DialogContent>
     </Dialog>

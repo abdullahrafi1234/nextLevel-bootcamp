@@ -1,3 +1,4 @@
+import { docsData } from "@/components/docs/loader";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -6,7 +7,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { docsData } from "@/data/docsData";
 import { cn } from "@/lib/utils";
 import { ChevronDown, ChevronRight, Menu } from "lucide-react";
 import { useState } from "react";
