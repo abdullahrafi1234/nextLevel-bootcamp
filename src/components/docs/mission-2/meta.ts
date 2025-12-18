@@ -7,17 +7,24 @@ export const category: DocCategory = {
   order: 1,
   sections: [
     {
-      id: "1",
-      title: "Module 5 Explore The Basic Types Of Typescript",
+      id: "Explore-Basic-Types-of-Typescript",
+      title: "Module: 5 Explore The Basic Types Of Typescript",
       order: 1,
-      markdownFile: "module-1.md",
+      markdownFile: "module-5.md",
       categoryId: "mission-2",
     },
     {
-      id: "2",
+      id: "Explore-Advance-Types-of-Typescript",
       title: "Module 6: Explore Advance Types of Typescript",
       order: 1,
-      markdownFile: "module-2.md",
+      markdownFile: "module-6.md",
+      categoryId: "mission-2",
+    },
+    {
+      id: "Object-Oriented-Typescript",
+      title: "Module 7: Object Oriented Typescript",
+      order: 1,
+      markdownFile: "module-7.md",
       categoryId: "mission-2",
     },
     // অন্য গুলো

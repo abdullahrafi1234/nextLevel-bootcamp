@@ -3,7 +3,7 @@ import { DocCategory } from "../interfaces";
 export const category: DocCategory = {
   id: "mission-1",
   title: "Mission 1: Be A Critical Thinker With JS",
-  icon: "🧠",
+  icon: "",
   order: 1,
   sections: [
     {
@@ -22,7 +22,7 @@ export const category: DocCategory = {
       categoryId: "mission-1",
     },
     {
-      id: "3",
+      id: "Data-Structures-that-Actually-Matter",
       title: "Module 3: Data Structures that Actually Matter",
       order: 1,
       markdownFile: "module-3.md",
