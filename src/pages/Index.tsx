@@ -1,6 +1,6 @@
-import { Navbar } from "@/components/layout/Navbar";
 import { HeroSection } from "@/components/home/HeroSection";
 import { TechStackSection } from "@/components/home/TechStackSection";
+import { Navbar } from "@/components/layout/Navbar";
 
 const Index = () => {
   return (
@@ -9,7 +9,7 @@ const Index = () => {
       <main className="pt-16">
         <HeroSection />
         <TechStackSection />
-        
+
         {/* Footer */}
         <footer className="border-t border-border py-8">
           <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">

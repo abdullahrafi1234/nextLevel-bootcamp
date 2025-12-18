@@ -23,7 +23,7 @@ export const MobileSidebar = () => {
       </DrawerTrigger>
       <DrawerContent className="h-[90vh] overflow-y-auto bg-background">
         <div className="p-6">
-          <h2 className="text-2xl font-bold mb-8">Bootcamp Notes</h2>
+          <h2 className="text-2xl font-bold mb-8">NoteShala</h2>
 
           {docsData.map((category) => (
             <div key={category.id} className="mb-8">

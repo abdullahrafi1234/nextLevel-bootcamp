@@ -1,8 +1,8 @@
+import { SearchDialog } from "@/components/docs/SearchDialog";
+import { Button } from "@/components/ui/button";
+import { BookOpen, Github, Menu, Search, X } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Search, Github, Menu, X, BookOpen } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { SearchDialog } from "@/components/docs/SearchDialog";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,25 +17,27 @@ export const Navbar = () => {
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
             >
               <BookOpen className="h-6 w-6 text-primary" />
-              <span className="font-bold text-lg hidden sm:inline">Bootcamp Notes</span>
+              <span className="font-bold text-2xl hidden sm:inline">
+                NoteShala
+              </span>
             </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-6">
               <Link
                 to="/docs"
-                className={`text-sm font-medium transition-colors hover:text-primary ${
+                className={`text-lg font-bold transition-colors hover:text-primary ${
                   isDocsPage ? "text-primary" : "text-muted-foreground"
                 }`}
               >
                 Docs
               </Link>
-              
+
               {/* Search Button */}
               <Button
                 variant="outline"
@@ -45,14 +47,14 @@ export const Navbar = () => {
               >
                 <Search className="h-4 w-4 mr-2" />
                 <span>Search docs...</span>
-                <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-xs font-medium text-muted-foreground">
+                <div className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-xs font-medium text-muted-foreground">
                   <span className="text-xs">⌘</span>K
-                </kbd>
+                </div>
               </Button>
 
               {/* GitHub Link */}
               <a
-                href="https://github.com"
+                href="https://github.com/abdullahrafi1234/nextLevel-bootcamp"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors"
@@ -75,7 +77,11 @@ export const Navbar = () => {
                 size="icon"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
-                {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                {isMenuOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
               </Button>
             </div>
           </div>
