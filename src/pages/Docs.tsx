@@ -1,7 +1,7 @@
-import { Navbar } from "@/components/layout/Navbar";
-import { Sidebar } from "@/components/docs/Sidebar";
-import { MobileSidebar } from "@/components/docs/MobileSidebar";
 import { DocContent } from "@/components/docs/DocContent";
+import { MobileSidebar } from "@/components/docs/MobileSidebar";
+import { Sidebar } from "@/components/docs/Sidebar";
+import { Navbar } from "@/components/layout/Navbar";
 
 const Docs = () => {
   return (

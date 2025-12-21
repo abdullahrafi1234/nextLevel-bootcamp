@@ -1,6 +1,6 @@
 import { SearchDialog } from "@/components/docs/SearchDialog";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Github, Menu, Search, X } from "lucide-react";
+import { FileText, Github, Linkedin, Menu, Search, X } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -21,8 +21,8 @@ export const Navbar = () => {
               to="/"
               className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
             >
-              <BookOpen className="h-6 w-6 text-primary" />
-              {/* <img className="w-20" src="/public/logo.png" alt="" /> */}
+              {/* <BookOpen className="h-6 w-6 text-primary" /> */}
+              <img className=" h-10" src="/public/N-logo.png" alt="" />
               <span className="font-bold text-2xl hidden sm:inline">
                 NoteShala
               </span>
@@ -32,10 +32,11 @@ export const Navbar = () => {
             <div className="hidden md:flex items-center gap-6">
               <Link
                 to="/docs"
-                className={`text-lg font-bold transition-colors hover:text-primary ${
+                className={` flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary ${
                   isDocsPage ? "text-primary" : "text-muted-foreground"
                 }`}
               >
+                <FileText className="h-4 w-4" />
                 Docs
               </Link>
 
@@ -55,12 +56,21 @@ export const Navbar = () => {
 
               {/* GitHub Link */}
               <a
-                href="https://github.com/abdullahrafi1234/nextLevel-bootcamp"
+                href="https://github.com/abdullahrafi1234/NoteShala"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <Github className="h-5 w-5" />
+              </a>
+              {/* Linkedin Link */}
+              <a
+                href="https://www.linkedin.com/in/abdullah-al-rafi-bhuiyan/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Linkedin className="h-5 w-5" />
               </a>
             </div>
 
@@ -94,20 +104,31 @@ export const Navbar = () => {
                 <Link
                   to="/docs"
                   onClick={() => setIsMenuOpen(false)}
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                  className={`flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary ${
                     isDocsPage ? "text-primary" : "text-muted-foreground"
                   }`}
                 >
+                  <FileText className="h-4 w-4" />
                   Docs
                 </Link>
                 <a
-                  href="https://github.com"
+                  href="https://github.com/abdullahrafi1234/NoteShala"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <Github className="h-4 w-4" />
                   GitHub
+                </a>
+                {/* Linkedin Link */}
+                <a
+                  href="https://www.linkedin.com/in/abdullah-al-rafi-bhuiyan/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <Linkedin className="h-4 w-4" />
+                  Linkedin
                 </a>
               </div>
             </div>

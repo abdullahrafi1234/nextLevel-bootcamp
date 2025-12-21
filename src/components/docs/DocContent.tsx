@@ -37,13 +37,41 @@ export const DocContent = () => {
         {/* এখানে direct content use করো – কোনো loading নেই! */}
         <MarkdownRenderer content={section.content} />
 
-        {/* Previous / Next navigation – তোমার আগের code same রাখো */}
-        <div className="mt-16 pt-8 border-t flex justify-between">
-          {prevSection && (
-            <Link to={`/docs/${prevSection.id}`}>← {prevSection.title}</Link>
+        <div className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row justify-between gap-4">
+          {prevSection ? (
+            <Link
+              to={`/docs/${prevSection.id}`}
+              className="group flex-1 flex flex-col items-start gap-1 p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-card hover:bg-slate-50 dark:hover:bg-slate-900/50 hover:border-primary/50 transition-all duration-300 shadow-sm hover:shadow-md"
+            >
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest flex items-center gap-1">
+                <span className="transform group-hover:-translate-x-1 transition-transform">
+                  ←
+                </span>{" "}
+                Previous
+              </span>
+              <span className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
+                {prevSection.title}
+              </span>
+            </Link>
+          ) : (
+            <div className="flex-1 hidden sm:block" />
           )}
+
           {nextSection && (
-            <Link to={`/docs/${nextSection.id}`}>{nextSection.title} →</Link>
+            <Link
+              to={`/docs/${nextSection.id}`}
+              className="group flex-1 flex flex-col items-end gap-1 p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-card hover:bg-slate-50 dark:hover:bg-slate-900/50 hover:border-primary/50 transition-all duration-300 shadow-sm hover:shadow-md text-right"
+            >
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest flex items-center gap-1">
+                Next{" "}
+                <span className="transform group-hover:translate-x-1 transition-transform">
+                  →
+                </span>
+              </span>
+              <span className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
+                {nextSection.title}
+              </span>
+            </Link>
           )}
         </div>
       </div>

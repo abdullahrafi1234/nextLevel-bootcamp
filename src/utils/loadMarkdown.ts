@@ -1,14 +1,3 @@
-// export const loadMarkdownContent = async (
-//   markdownPath: string
-// ): Promise<string> => {
-//   try {
-//     const fullPath = `/src/docs/${markdownPath}?raw`; // path adjust করো if needed
-//     const content = await import(/* @vite-ignore */ fullPath);
-//     return content.default as string;
-//   } catch (err) {
-//     return "Error loading content";
-//   }
-// };
 export const loadMarkdownContent = async (path: string): Promise<string> => {
   try {
     // path like './mission-1/module-1.md'
