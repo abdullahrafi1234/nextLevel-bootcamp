@@ -34,7 +34,7 @@ class Animal {
   constructor(
     public name: string,
     public species: string,
-    public sound: string
+    public sound: string,
   ) {}
   makeSound() {
     console.log(`${this.name} is making sound ${this.sound}`);
